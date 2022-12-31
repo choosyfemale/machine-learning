@@ -1,6 +1,6 @@
 ---
 title: 'Learning Lab 1 Case Study'
-author: ""
+author: "Emily Weigel"
 date: "`r format(Sys.Date(),'%B %e, %Y')`"
 output:
   html_document:
