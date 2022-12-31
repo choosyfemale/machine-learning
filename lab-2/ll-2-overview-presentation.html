@@ -4,8 +4,8 @@
     <title>Machine Learning Learning Lab 2: Feature Engineering</title>
     <meta charset="utf-8" />
     <meta name="author" content="Dr. Joshua Rosenberg" />
-    <meta name="date" content="2022-07-13" />
-    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
+    <meta name="date" content="2022-11-21" />
+    <script src="libs/header-attrs-2.18/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
     <script src="libs/panelset-0.2.6/panelset.js"></script>
@@ -38,11 +38,11 @@ class: clear, title-slide, inverse, center, top, middle
 # Machine Learning Learning Lab 2: Feature Engineering
 ----
 ### **Dr. Joshua Rosenberg**
-### July 13, 2022
+### November 21, 2022
 
 ---
 
-# Happy Wednesday
+# Trying to reflect on the big picture
 
 .panelset[
 
@@ -69,25 +69,12 @@ class: clear, title-slide, inverse, center, top, middle
 
 ]
 
-.panel[.panel-name[Logistics]
+.panel[.panel-name[Today]
 
-- Links to presentations are here: https://laser-institute.github.io/machine-learning
-    - And in the machine learning "team": https://github.com/orgs/laser-institute/teams/machine-learning
-- GitHub will probably continue to work, but be challenging (but should be less so)
-    - You'll need to fork the repository to "submit" your badge; you can do this at any time (through GitHub.com or GitHub Desktop)
-- Installation of required packages will continue to work, but may be challenging (but should be less so)
-
-]
-
-.panel[.panel-name[Plan for today]
-
-- **This morning**
-    - We'll spend the first _30 minutes_ of our 75 minutes working through the case study and badge activity
-    - Then, we'll start the presentation for learning lab #2
-- **This afternoon**
-    - We'll spend the first _10-20 minutes_ finishing the presentation for learning lab #1
-    - Then, you'll have time to _continue the case study and badge activity for learning lab #1_
-        - Or, you can move on to the case study and badge activity for learning lab #2
+    - We'll recap ML LL #1
+    - Then dive into the presentation for ML LL #2
+    - We'll reserve at least an hour for discussion
+    
 ]
 ]
 
@@ -97,11 +84,10 @@ class: clear, title-slide, inverse, center, top, middle
 
 
 .pull-left[
-### Turn to an elbow partner and discuss:
+### Eiscuss:
 
-- Any additional thoughts on the following?
-    - Which modality (supervised or unsupervised machine learning) are you interested in using?
-    - What data or context are you interested in for your use of ML?
+  - Which modality (supervised or unsupervised machine learning) are you interested in using?
+  - What data or context are you interested in for your use of ML?
 ]
 
 .pull-right[
@@ -212,7 +198,7 @@ Here's a time stamp:
 
 
 ```
-## [1] "2022-07-13 09:52:01 EDT"
+## [1] "2022-11-21 08:58:03 EST"
 ```
 
 **How could this variable be used as a predictor variable?**
@@ -232,7 +218,7 @@ Here's a time stamp:
 .pull-right[
 
 &lt;img src="img/joro-pointing.jpeg" width="75%" /&gt;
-
+]
 ---
 
 # What else should we consider?
@@ -247,6 +233,7 @@ Here's a time stamp:
 ## For specific types of variables
 
 - Categorical variables
+    - Dummy coding 
     - Combining categories
 - Numeric variables
     - Normalizing ("standardizing")
@@ -258,7 +245,7 @@ Here's a time stamp:
 - We can do all of these things manually
 - But, there are also helpful functions to do this
 - Any, the {recipes} package makes it practical to carry out feature engineering steps for not only single variables, but groups of variables (or all of the variables)
-- Examples, all of which start with `_step()`:
+- Examples, all of which start with `step()`:
     - `step_dummy()`
     - `step_normalize()`
     - `step_nzv()`
@@ -306,8 +293,11 @@ We'd need to use the same training data to tune a new model---and the same testi
 # The problem introduced by feature engineering
 
 - In short, a challenges arises when we wish to use our training data _more than once_
+
 - Namely, if we repeatedly training an algorithm on the same data and then make changes, we may be tailoring our model to specific features of the testing data
+
 - This is a _very common and pervasive problem_ in machine learning applications
+
 - Resampling conserves our testing data; we don't have to spend it until we've finalized our model
 
 ---
@@ -315,10 +305,18 @@ We'd need to use the same training data to tune a new model---and the same testi
 # Resampling (and _k_-folds cross-validation)
 
 - Resampling involves blurring the boundaries between training and testing data, _but only for the training split of the data_
+
+--
+
 - Specifically, it involves combining these two portions of our data into one, iteratively considering:
     - Some of the data to be for "training"
     - Some for "testing"
-- Then, fit measures are summed across these different samples
+
+--
+
+- Then, fit measures are **averaged** across these different samples
+
+--
 
 ---
 
@@ -328,9 +326,12 @@ We'd need to use the same training data to tune a new model---and the same testi
     - Here, some of the data is considered to be a part of the *training* set 
     - The remaining data is a part of the *testing* set
 
+--
+
 - How many sets (samples taken through resampling)?
     - This is determined by _k_, number of times the data is resampled
-    - When _k_ is equivalent to the number of rows in the data, this is often called "Leave One Out Cross-Validation" (LOOCV)
+    - When _k_ is equivalent to the number of rows in the data, this is often called "Leave One Out Cross-Validation" (LOOCV) 
+
 ---
 
 # Let's consider an example
@@ -344,16 +345,16 @@ Say we have a data set, `d`, with 100 observations (rows or data points) with _k
 ## # A tibble: 100 × 3
 ##       id  var_a var_b
 ##    &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;
-##  1     1 0.0224 0.383
-##  2     2 0.236  0.381
-##  3     3 0.527  0.868
-##  4     4 0.329  0.846
-##  5     5 0.588  0.917
-##  6     6 0.518  0.811
-##  7     7 0.963  0.974
-##  8     8 0.732  0.311
-##  9     9 0.775  0.398
-## 10    10 0.142  0.206
+##  1     1 0.602  0.593
+##  2     2 0.392  0.409
+##  3     3 0.301  0.944
+##  4     4 0.786  0.125
+##  5     5 0.0994 0.720
+##  6     6 0.316  0.796
+##  7     7 0.870  0.318
+##  8     8 0.269  0.388
+##  9     9 0.919  0.256
+## 10    10 0.0668 0.883
 ## # … with 90 more rows
 ```
 
@@ -366,20 +367,20 @@ Say we have a data set, `d`, with 100 observations (rows or data points) with _k
 
 ```
 ## # A tibble: 3 × 3
-##      id  var_a var_b
-##   &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;
-## 1     1 0.0224 0.383
-## 2     2 0.236  0.381
-## 3     3 0.527  0.868
+##      id var_a var_b
+##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1 0.602 0.593
+## 2     2 0.392 0.409
+## 3     3 0.301 0.944
 ```
 
 ```
 ## # A tibble: 3 × 3
-##      id var_a var_b
-##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1    91 0.780 0.483
-## 2    92 0.624 0.670
-## 3    93 0.718 0.494
+##      id  var_a var_b
+##   &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1    91 0.256  0.168
+## 2    92 0.0170 0.360
+## 3    93 0.754  0.720
 ```
 
 ---
@@ -389,20 +390,20 @@ Say we have a data set, `d`, with 100 observations (rows or data points) with _k
 
 ```
 ## # A tibble: 3 × 3
-##      id  var_a var_b
-##   &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;
-## 1     1 0.0224 0.383
-## 2     2 0.236  0.381
-## 3     3 0.527  0.868
+##      id var_a var_b
+##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1 0.602 0.593
+## 2     2 0.392 0.409
+## 3     3 0.301 0.944
 ```
 
 ```
 ## # A tibble: 3 × 3
-##      id var_a  var_b
-##   &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
-## 1    81 0.416 0.0451
-## 2    82 0.954 0.993 
-## 3    83 0.385 0.120
+##      id var_a var_b
+##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1    81 0.656 0.898
+## 2    82 0.417 0.498
+## 3    83 0.864 0.558
 ```
 
 ---
@@ -412,23 +413,25 @@ Say we have a data set, `d`, with 100 observations (rows or data points) with _k
 
 ```
 ## # A tibble: 3 × 3
-##      id  var_a var_b
-##   &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;
-## 1     1 0.0224 0.383
-## 2     2 0.236  0.381
-## 3     3 0.527  0.868
+##      id var_a var_b
+##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1 0.602 0.593
+## 2     2 0.392 0.409
+## 3     3 0.301 0.944
 ```
 
 ```
 ## # A tibble: 3 × 3
 ##      id var_a var_b
 ##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1    71 0.753 0.630
-## 2    72 0.268 0.245
-## 3    73 0.636 0.894
+## 1    71 0.772 0.822
+## 2    72 0.377 0.432
+## 3    73 0.899 0.186
 ```
 
 ... through the tenth resampling, after which the fit measures are simply summed
+
+--
 
 That's it! Thankfully, we have automated tools to do this that we'll work on in the code examples
 
@@ -563,7 +566,7 @@ train_test_split &lt;- initial_split(d, prop = .80)
 
 data_train &lt;- training(train_test_split)
 
-kfcv &lt;- vfold_cv(data_train, v = 15) # this differentiates this from what we did before
+kfcv &lt;- vfold_cv(data_train, v = 10) # this differentiates this from what we did before
 # before, we simple used data_train to fit our model
 ```
 ]
@@ -574,11 +577,12 @@ kfcv &lt;- vfold_cv(data_train, v = 15) # this differentiates this from what we 
 
 
 ```r
-my_rec &lt;- recipe(final_grade ~ ., data = d) %&gt;% # a continuous measure of students' final grade
+recipe(final_grade ~ ., data = data_train) %&gt;% # **edit**: change t final grade
+    update_role(student_id, course_id, section, new_role = "ID variable") %&gt;% # this can be any string; for ID variables
     step_normalize(all_numeric_predictors()) %&gt;% # standardizes numeric variables
     step_nzv(all_predictors()) %&gt;% # remove predictors with a "near-zero variance"
-    step_novel(all_nominal_predictors()) %&gt;% # add a musing label for factors
     step_dummy(all_nominal_predictors()) %&gt;%  # dummy code all factor variables
+    step_novel(all_nominal_predictors()) %&gt;% # add a musing label for factors
     step_impute_knn(all_predictors()) # impute missing data for all predictor variables
 ```
 ]
@@ -591,7 +595,7 @@ my_rec &lt;- recipe(final_grade ~ ., data = d) %&gt;% # a continuous measure of 
 ```r
 my_mod &lt;-
     linear_reg() %&gt;% # note the difference here
-    set_engine("glm") %&gt;% 
+    set_engine("lm") %&gt;% 
     set_mode("regression") # and here
 
 # specify workflow

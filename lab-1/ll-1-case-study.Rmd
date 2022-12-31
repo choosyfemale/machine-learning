@@ -12,11 +12,10 @@ output:
 editor_options:
   markdown:
     wrap: 72
-bibliography: lit/references.bib
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ```
 
 First, please add your name above!
@@ -57,26 +56,23 @@ of description or explanation.
 ## Step 0: Loading and setting up
 
 First, let's load the packages we'll use---the familiar {tidyverse} and
-several others focused on modeling. Like in earlier learning labs, click
+several others focused on modeling: tidymodels and janitor. As a tip, use the  
+`library()` function to load these packages. After you've done that, like in earlier learning labs, click
 the green arrow to run the code chunk.
 
 ```{r}
-library(tidyverse)
-library(tidymodels)
-library(janitor)
+
 ```
 
 Next, we'll load the *already-processed* (for this lab) data set that
 we'll use for our supervised machine learning modeling.
 
-*Note*: We created a means of visualizing the threads to make coding
-them easier; that's here and it provides a means of seeing what the raw
-data is like: <https://jmichaelrosenberg.shinyapps.io/ngsschat-shiny/>
+It is in the `data` sub-folder and is named `ngsschat-processes-data.csv`.
+
+Load it and assign the name `d` to it in the code chunk below, then run the chunk.
 
 ```{r}
-d <- read_csv("data/ngsschat-processed-data.csv")
 
-d
 ```
 
 The data has only five variables:
@@ -141,7 +137,7 @@ model later. You can change this number if you wish.
 
 After you decide how much to set aside, the most common approach for
 actually partitioning your data is to use a random sample. For our
-purposes, we'll use random sampling to select 25% for the test set and
+purposes, we'll use random sampling to select 20% for the test set and
 use the remainder for the training set, which are the defaults for the
 {[rsample](https://tidymodels.github.io/rsample/)} package.
 
@@ -264,7 +260,7 @@ Here, then, we fit the data *using the training data set* and evaluate
 its accuracy using the *testing data set* (which is not used to train
 the model).
 
-```{r, include = FALSE}
+```{r, message = FALSE}
 final_fit <- last_fit(fitted_model, train_test_split)
 ```
 
@@ -274,6 +270,7 @@ Type `final_fit` below; this is the final, fitted model---one that can
 be interpreted further in the next step!
 
 ```{r}
+
 ```
 
 You may see a message/warning above or when you examine `final_fit`; you
